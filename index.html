@@ -3,1091 +3,830 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Оранжевый Кликер - Игра</title>
+    <title>Оранжевый Кликер</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: Arial, sans-serif;
-        }
-
-        body {
-            background: linear-gradient(135deg, #ff7b00 0%, #ff5500 100%);
-            min-height: 100vh;
-            color: #333;
-        }
-
-        .main-container {
-            max-width: 1000px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-
-        .header {
-            text-align: center;
-            margin-bottom: 30px;
-            padding: 20px;
-            background: rgba(255, 255, 255, 0.9);
-            border-radius: 15px;
-            box-shadow: 0 5px 15px rgba(255, 87, 34, 0.3);
-        }
-
-        .header h1 {
-            color: #ff5722;
-            font-size: 2.5rem;
-            margin-bottom: 10px;
-        }
-
-        .header p {
-            color: #ff6d00;
-            font-size: 1.1rem;
-            margin-bottom: 20px;
-        }
-
-        .game-links {
-            display: flex;
-            justify-content: center;
-            gap: 20px;
-            flex-wrap: wrap;
-            margin-top: 30px;
-        }
-
-        .game-card {
-            background: white;
-            border-radius: 15px;
-            padding: 25px;
-            width: 300px;
-            text-align: center;
-            box-shadow: 0 8px 20px rgba(255, 87, 34, 0.2);
-            transition: transform 0.3s;
-            border: 3px solid #ff9800;
-        }
-
-        .game-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 12px 25px rgba(255, 87, 34, 0.4);
-        }
-
-        .game-card h2 {
-            color: #ff5722;
-            margin-bottom: 15px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-        }
-
-        .game-card p {
-            color: #666;
-            margin-bottom: 20px;
-            line-height: 1.5;
-        }
-
-        .play-btn {
-            display: inline-block;
-            padding: 12px 30px;
-            background: linear-gradient(90deg, #ff9800, #ff5722);
-            color: white;
-            text-decoration: none;
-            border-radius: 10px;
-            font-weight: bold;
-            font-size: 1.1rem;
-            transition: all 0.3s;
-        }
-
-        .play-btn:hover {
-            background: linear-gradient(90deg, #ff8f00, #f4511e);
-            transform: scale(1.05);
-        }
-
-        .file-list {
-            background: rgba(255, 255, 255, 0.95);
-            border-radius: 15px;
-            padding: 25px;
-            margin-top: 40px;
-            box-shadow: 0 5px 15px rgba(255, 87, 34, 0.2);
-        }
-
-        .file-list h2 {
-            color: #ff5722;
-            margin-bottom: 20px;
-            text-align: center;
-        }
-
-        .files {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px;
-        }
-
-        .file-item {
-            background: #fff3e0;
-            padding: 20px;
-            border-radius: 10px;
-            border: 2px solid #ffcc80;
-            transition: all 0.3s;
-        }
-
-        .file-item:hover {
-            background: #ffe0b2;
-            transform: translateY(-5px);
-        }
-
-        .file-item h3 {
-            color: #ff6d00;
-            margin-bottom: 10px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .file-item p {
-            color: #ff8a65;
-            font-size: 0.9rem;
-        }
-
-        .file-link {
-            display: inline-block;
-            margin-top: 10px;
-            color: #ff5722;
-            text-decoration: none;
-            font-weight: bold;
-            transition: color 0.3s;
-        }
-
-        .file-link:hover {
-            color: #ff9800;
-            text-decoration: underline;
-        }
-
-        .instructions {
-            background: rgba(255, 255, 255, 0.95);
-            border-radius: 15px;
-            padding: 25px;
-            margin-top: 40px;
-            box-shadow: 0 5px 15px rgba(255, 87, 34, 0.2);
-        }
-
-        .instructions h2 {
-            color: #ff5722;
-            margin-bottom: 20px;
-            text-align: center;
-        }
-
-        .steps {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 20px;
-        }
-
-        .step {
-            background: #fff8e1;
-            padding: 20px;
-            border-radius: 10px;
-            text-align: center;
-            border: 2px solid #ffcc80;
-        }
-
-        .step-number {
-            display: inline-block;
-            width: 40px;
-            height: 40px;
-            background: #ff9800;
-            color: white;
-            border-radius: 50%;
-            line-height: 40px;
-            font-weight: bold;
-            margin-bottom: 15px;
-        }
-
-        .step h4 {
-            color: #ff6d00;
-            margin-bottom: 10px;
-        }
-
-        .footer {
-            text-align: center;
-            margin-top: 40px;
-            padding: 20px;
-            color: white;
-            font-size: 0.9rem;
-        }
-
-        @media (max-width: 768px) {
-            .game-links {
-                flex-direction: column;
-                align-items: center;
-            }
-            
-            .game-card {
-                width: 100%;
-                max-width: 350px;
-            }
-        }
+        /* Все CSS стили будут вставлены сюда из style.html */
     </style>
 </head>
 <body>
-    <div class="main-container">
-        <div class="header">
-            <h1>🎮 Оранжевый Кликер</h1>
-            <p>Яркая игра-кликер с сохранением прогресса и анимациями!</p>
-            <p style="font-size: 1rem; color: #ff8a65;">Игра разделена на 3 HTML файла. Выберите часть для просмотра:</p>
-        </div>
-
-        <div class="game-links">
-            <div class="game-card">
-                <h2>🏠 Часть 1</h2>
-                <p><strong>index.html</strong> - Основная структура игры</p>
-                <p>Содержит HTML разметку всех элементов игры</p>
-                <a href="part1.html" class="play-btn">Открыть Часть 1</a>
-            </div>
-
-            <div class="game-card">
-                <h2>🎨 Часть 2</h2>
-                <p><strong>index.html</strong> - Стили и оформление</p>
-                <p>Вся CSS стилизация в HTML файле</p>
-                <a href="part2.html" class="play-btn">Открыть Часть 2</a>
-            </div>
-
-            <div class="game-card">
-                <h2>⚡ Часть 3</h2>
-                <p><strong>index.html</strong> - Логика игры</p>
-                <p>JavaScript код для работы игры</p>
-                <a href="part3.html" class="play-btn">Открыть Часть 3</a>
-            </div>
-        </div>
-
-        <div class="file-list">
-            <h2>📁 Файлы игры</h2>
-            <div class="files">
-                <div class="file-item">
-                    <h3><i class="fas fa-code"></i> index.html</h3>
-                    <p>Главный HTML файл игры со всей структурой</p>
-                    <a href="part1.html" class="file-link">Открыть файл →</a>
+    <div class="container">
+        <header>
+            <div class="stats">
+                <div class="stat-item">
+                    <i class="fas fa-coins"></i>
+                    <span id="coins">0</span>
+                    <span class="stat-label">Монеты</span>
                 </div>
-                <div class="file-item">
-                    <h3><i class="fas fa-paint-brush"></i> style.css</h3>
-                    <p>Стили и оформление в отдельном HTML файле</p>
-                    <a href="part2.html" class="file-link">Открыть стили →</a>
+                <div class="stat-item">
+                    <i class="fas fa-chart-line"></i>
+                    <span id="level">1</span>
+                    <span class="stat-label">Уровень</span>
                 </div>
-                <div class="file-item">
-                    <h3><i class="fas fa-cogs"></i> script.js</h3>
-                    <p>Логика игры в отдельном HTML файле</p>
-                    <a href="part3.html" class="file-link">Открыть скрипт →</a>
+                <div class="stat-item">
+                    <i class="fas fa-hand-pointer"></i>
+                    <span id="click-value">1</span>
+                    <span class="stat-label">За клик</span>
+                </div>
+                <div class="stat-item">
+                    <i class="fas fa-robot"></i>
+                    <span id="auto-clickers">0</span>
+                    <span class="stat-label">Автокликеры</span>
                 </div>
             </div>
-        </div>
+        </header>
 
-        <div class="instructions">
-            <h2>📋 Как собрать игру</h2>
-            <div class="steps">
-                <div class="step">
-                    <div class="step-number">1</div>
-                    <h4>Скачайте все 3 части</h4>
-                    <p>Скопируйте код из каждого HTML файла</p>
+        <main>
+            <div class="coin-container">
+                <button id="coin-button" class="coin-button">
+                    <i class="fas fa-coins"></i>
+                    <div class="coin-shine"></div>
+                </button>
+                <div class="click-instruction">Кликни на монету!</div>
+            </div>
+
+            <div class="upgrades">
+                <div class="upgrade-section">
+                    <h2><i class="fas fa-arrow-up"></i> Улучшение клика</h2>
+                    <p>Увеличивает количество монет за каждый клик</p>
+                    <button id="upgrade-button" class="upgrade-btn">
+                        <span class="upgrade-text">Улучшить клик</span>
+                        <span class="upgrade-cost">Стоимость: <span id="upgrade-cost">10</span> монет</span>
+                    </button>
+                    <div class="upgrade-info">
+                        Текущий бонус: <span id="click-bonus">1</span> монета за клик
+                    </div>
                 </div>
-                <div class="step">
-                    <div class="step-number">2</div>
-                    <h4>Объедините код</h4>
-                    <p>Скопируйте CSS из части 2 и JS из части 3 в часть 1</p>
-                </div>
-                <div class="step">
-                    <div class="step-number">3</div>
-                    <h4>Сохраните как один файл</h4>
-                    <p>Сохраните объединенный код как index.html</p>
-                </div>
-                <div class="step">
-                    <div class="step-number">4</div>
-                    <h4>Запустите игру</h4>
-                    <p>Откройте index.html в браузере</p>
+
+                <div class="upgrade-section">
+                    <h2><i class="fas fa-robot"></i> Автокликер</h2>
+                    <p>Автоматически кликает каждые 10 секунд</p>
+                    <button id="autoclicker-button" class="upgrade-btn">
+                        <span class="upgrade-text">Купить автокликер</span>
+                        <span class="upgrade-cost">Стоимость: <span id="autoclicker-cost">50</span> монет</span>
+                    </button>
+                    <div class="upgrade-info">
+                        Доход: <span id="autoclicker-income">0</span> монет/сек
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <div class="footer">
-            <p>Игра "Оранжевый Кликер" © 2023</p>
-        </div>
+            <div class="achievements">
+                <h2><i class="fas fa-trophy"></i> Достижения</h2>
+                <div class="achievement-list">
+                    <div class="achievement" id="achievement-100">
+                        <i class="fas fa-copper-coin"></i>
+                        <span>100 монет</span>
+                    </div>
+                    <div class="achievement" id="achievement-500">
+                        <i class="fas fa-silver-coin"></i>
+                        <span>500 монет</span>
+                    </div>
+                    <div class="achievement" id="achievement-1000">
+                        <i class="fas fa-gold-coin"></i>
+                        <span>1000 монет</span>
+                    </div>
+                    <div class="achievement" id="achievement-level10">
+                        <i class="fas fa-rocket"></i>
+                        <span>10 уровень</span>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <footer>
+            <div class="progress-save">
+                <span>Прогресс автоматически сохраняется</span>
+                <button id="reset-button" class="reset-btn">
+                    <i class="fas fa-trash"></i> Сбросить прогресс
+                </button>
+            </div>
+            <div class="hint">
+                <i class="fas fa-lightbulb"></i> Кликай на монету, улучшай клик и покупай автокликеры!
+            </div>
+        </footer>
     </div>
 
     <script>
-        // Простая анимация для карточек
-        document.addEventListener('DOMContentLoaded', function() {
-            const cards = document.querySelectorAll('.game-card');
-            cards.forEach((card, index) => {
-                card.style.animation = `fadeInUp 0.5s ease-out ${index * 0.1}s both`;
-            });
+        // Все JavaScript функции будут вставлены сюда из script.html
+    </script>
+</body>
+</html>
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Roboto', sans-serif;
+}
+
+body {
+    background: linear-gradient(135deg, #ff7b00 0%, #ff5500 100%);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    color: #333;
+}
+
+.container {
+    background-color: rgba(255, 255, 255, 0.95);
+    width: 100%;
+    max-width: 900px;
+    border-radius: 20px;
+    box-shadow: 0 15px 35px rgba(255, 87, 34, 0.4);
+    overflow: hidden;
+    animation: fadeIn 0.8s ease-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+header {
+    background: linear-gradient(90deg, #ff9800, #ff5722);
+    color: white;
+    padding: 20px;
+    text-align: center;
+    border-bottom: 5px solid #ffab40;
+}
+
+.stats {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+.stat-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: rgba(255, 255, 255, 0.15);
+    padding: 15px 20px;
+    border-radius: 15px;
+    min-width: 130px;
+    transition: transform 0.3s;
+}
+
+.stat-item:hover {
+    transform: translateY(-5px);
+    background: rgba(255, 255, 255, 0.25);
+}
+
+.stat-item i {
+    font-size: 2rem;
+    margin-bottom: 8px;
+    color: #fff;
+    text-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.stat-item span:first-of-type {
+    font-size: 1.8rem;
+    font-weight: 700;
+    margin-bottom: 5px;
+}
+
+.stat-label {
+    font-size: 0.9rem;
+    opacity: 0.9;
+}
+
+main {
+    padding: 30px;
+}
+
+.coin-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 40px;
+}
+
+.coin-button {
+    width: 180px;
+    height: 180px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 30% 30%, #ffd54f, #ff9800);
+    border: 8px solid #ff8f00;
+    box-shadow: 
+        0 0 30px rgba(255, 152, 0, 0.8),
+        inset 0 0 30px rgba(255, 235, 59, 0.7);
+    cursor: pointer;
+    position: relative;
+    transition: transform 0.1s;
+    animation: coinGlow 2s infinite alternate;
+}
+
+@keyframes coinGlow {
+    from { box-shadow: 
+        0 0 30px rgba(255, 152, 0, 0.8),
+        inset 0 0 30px rgba(255, 235, 59, 0.7); }
+    to { box-shadow: 
+        0 0 40px rgba(255, 152, 0, 1),
+        inset 0 0 40px rgba(255, 235, 59, 0.9); }
+}
+
+.coin-button:active {
+    transform: scale(0.85);
+    animation: none;
+    box-shadow: 
+        0 0 20px rgba(255, 152, 0, 0.6),
+        inset 0 0 20px rgba(255, 235, 59, 0.5);
+}
+
+.coin-button i {
+    font-size: 5rem;
+    color: #ff8f00;
+    text-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+.coin-shine {
+    position: absolute;
+    top: 15%;
+    left: 15%;
+    width: 40px;
+    height: 40px;
+    background: rgba(255, 255, 255, 0.8);
+    border-radius: 50%;
+    filter: blur(5px);
+    animation: shineMove 3s infinite linear;
+}
+
+@keyframes shineMove {
+    0% { top: 15%; left: 15%; }
+    25% { top: 20%; left: 65%; }
+    50% { top: 65%; left: 65%; }
+    75% { top: 65%; left: 20%; }
+    100% { top: 15%; left: 15%; }
+}
+
+.click-instruction {
+    margin-top: 20px;
+    font-size: 1.2rem;
+    color: #ff6d00;
+    font-weight: 500;
+    text-align: center;
+    animation: pulseText 2s infinite;
+}
+
+@keyframes pulseText {
+    0% { opacity: 0.7; }
+    50% { opacity: 1; }
+    100% { opacity: 0.7; }
+}
+
+.upgrades {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 30px;
+    margin-bottom: 40px;
+}
+
+.upgrade-section {
+    flex: 1;
+    min-width: 300px;
+    background: #fff8e1;
+    border-radius: 15px;
+    padding: 25px;
+    box-shadow: 0 8px 20px rgba(255, 152, 0, 0.15);
+    border: 2px solid #ffcc80;
+    transition: transform 0.3s;
+}
+
+.upgrade-section:hover {
+    transform: translateY(-5px);
+}
+
+.upgrade-section h2 {
+    color: #ff6d00;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.upgrade-section p {
+    color: #ff8a65;
+    margin-bottom: 20px;
+    font-size: 0.95rem;
+}
+
+.upgrade-btn {
+    width: 100%;
+    padding: 18px;
+    background: linear-gradient(90deg, #ff9800, #ff5722);
+    color: white;
+    border: none;
+    border-radius: 12px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.3s;
+    margin-bottom: 15px;
+}
+
+.upgrade-btn:hover {
+    background: linear-gradient(90deg, #ff8f00, #f4511e);
+    transform: translateY(-3px);
+    box-shadow: 0 8px 15px rgba(255, 87, 34, 0.3);
+}
+
+.upgrade-btn:disabled {
+    background: #ccc;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
+.upgrade-text {
+    font-size: 1.2rem;
+}
+
+.upgrade-cost {
+    font-size: 0.9rem;
+    opacity: 0.9;
+}
+
+.upgrade-info {
+    background: #ffecb3;
+    padding: 12px;
+    border-radius: 10px;
+    text-align: center;
+    color: #ff6d00;
+    font-weight: 500;
+}
+
+.achievements {
+    background: #fff3e0;
+    border-radius: 15px;
+    padding: 25px;
+    box-shadow: 0 8px 20px rgba(255, 152, 0, 0.15);
+    border: 2px solid #ffcc80;
+}
+
+.achievements h2 {
+    color: #ff6d00;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.achievement-list {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+.achievement {
+    flex: 1;
+    min-width: 150px;
+    background: #ffe0b2;
+    border-radius: 10px;
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    color: #ff6d00;
+    opacity: 0.5;
+    transition: all 0.3s;
+}
+
+.achievement.unlocked {
+    opacity: 1;
+    background: #ffcc80;
+    box-shadow: 0 5px 10px rgba(255, 152, 0, 0.3);
+}
+
+.achievement i {
+    font-size: 2rem;
+}
+
+footer {
+    background: #ffcc80;
+    padding: 20px;
+    text-align: center;
+    border-top: 5px solid #ffab40;
+}
+
+.progress-save {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+.progress-save span {
+    color: #ff6d00;
+    font-weight: 500;
+}
+
+.reset-btn {
+    background: #ff6d00;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.3s;
+}
+
+.reset-btn:hover {
+    background: #ff5722;
+    transform: translateY(-3px);
+}
+
+.hint {
+    color: #ff6d00;
+    font-style: italic;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
+
+.coin-popup {
+    position: fixed;
+    color: #ff9800;
+    font-weight: bold;
+    font-size: 1.5rem;
+    pointer-events: none;
+    animation: floatUp 1s forwards;
+    z-index: 1000;
+}
+
+@keyframes floatUp {
+    0% { opacity: 1; transform: translateY(0); }
+    100% { opacity: 0; transform: translateY(-100px); }
+}
+
+@media (max-width: 768px) {
+    .stats {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .stat-item {
+        width: 80%;
+    }
+    
+    .upgrade-section {
+        min-width: 100%;
+    }
+    
+    .coin-button {
+        width: 150px;
+        height: 150px;
+    }
+    
+    .coin-button i {
+        font-size: 4rem;
+    }
+    
+    .progress-save {
+        flex-direction: column;
+        align-items: center;
+    }
+}
+          </style>
+          <script>
+// Игровые переменные
+let coins = 0;
+let level = 1;
+let clickValue = 1;
+let clickUpgradeCost = 10;
+let autoClickers = 0;
+let autoClickerCost = 50;
+let achievements = {
+    "100": false,
+    "500": false,
+    "1000": false,
+    "level10": false
+};
+
+// DOM элементы
+const coinButton = document.getElementById('coin-button');
+const coinsDisplay = document.getElementById('coins');
+const levelDisplay = document.getElementById('level');
+const clickValueDisplay = document.getElementById('click-value');
+const upgradeButton = document.getElementById('upgrade-button');
+const upgradeCostDisplay = document.getElementById('upgrade-cost');
+const clickBonusDisplay = document.getElementById('click-bonus');
+const autoclickerButton = document.getElementById('autoclicker-button');
+const autoclickerCostDisplay = document.getElementById('autoclicker-cost');
+const autoClickersDisplay = document.getElementById('auto-clickers');
+const autoclickerIncomeDisplay = document.getElementById('autoclicker-income');
+const resetButton = document.getElementById('reset-button');
+
+// Инициализация игры
+function initGame() {
+    loadGame();
+    updateUI();
+    startAutoClickers();
+    
+    // Обновление интерфейса каждую секунду для плавности
+    setInterval(updateUI, 100);
+}
+
+// Загрузка сохраненной игры
+function loadGame() {
+    const savedGame = localStorage.getItem('orangeClickerSave');
+    
+    if (savedGame) {
+        const gameData = JSON.parse(savedGame);
+        coins = gameData.coins || 0;
+        level = gameData.level || 1;
+        clickValue = gameData.clickValue || 1;
+        clickUpgradeCost = gameData.clickUpgradeCost || 10;
+        autoClickers = gameData.autoClickers || 0;
+        autoClickerCost = gameData.autoClickerCost || 50;
+        achievements = gameData.achievements || achievements;
+    }
+}
+
+// Сохранение игры
+function saveGame() {
+    const gameData = {
+        coins,
+        level,
+        clickValue,
+        clickUpgradeCost,
+        autoClickers,
+        autoClickerCost,
+        achievements
+    };
+    
+    localStorage.setItem('orangeClickerSave', JSON.stringify(gameData));
+}
+
+// Обновление интерфейса
+function updateUI() {
+    // Обновление отображения
+    coinsDisplay.textContent = formatNumber(coins);
+    levelDisplay.textContent = level;
+    clickValueDisplay.textContent = clickValue;
+    upgradeCostDisplay.textContent = clickUpgradeCost;
+    clickBonusDisplay.textContent = clickValue;
+    autoclickerCostDisplay.textContent = autoClickerCost;
+    autoClickersDisplay.textContent = autoClickers;
+    autoclickerIncomeDisplay.textContent = autoClickers * 0.1;
+    
+    // Проверка, достаточно ли денег для улучшений
+    upgradeButton.disabled = coins < clickUpgradeCost;
+    autoclickerButton.disabled = coins < autoClickerCost;
+    
+    // Обновление уровня
+    updateLevel();
+    
+    // Проверка достижений
+    checkAchievements();
+    
+    // Сохранение игры
+    saveGame();
+}
+
+// Форматирование чисел (1000 -> 1K)
+function formatNumber(num) {
+    if (num >= 1000000) {
+        return (num / 1000000).toFixed(1) + 'M';
+    }
+    if (num >= 1000) {
+        return (num / 1000).toFixed(1) + 'K';
+    }
+    return num;
+}
+
+// Обновление уровня игрока
+function updateLevel() {
+    const newLevel = Math.floor(coins / 100) + 1;
+    
+    if (newLevel > level) {
+        level = newLevel;
+        // Анимация при повышении уровня
+        levelDisplay.style.transform = 'scale(1.5)';
+        setTimeout(() => {
+            levelDisplay.style.transform = 'scale(1)';
+        }, 300);
+    }
+}
+
+// Проверка достижений
+function checkAchievements() {
+    // 100 монет
+    if (coins >= 100 && !achievements["100"]) {
+        achievements["100"] = true;
+        unlockAchievement("achievement-100");
+    }
+    
+    // 500 монет
+    if (coins >= 500 && !achievements["500"]) {
+        achievements["500"] = true;
+        unlockAchievement("achievement-500");
+    }
+    
+    // 1000 монет
+    if (coins >= 1000 && !achievements["1000"]) {
+        achievements["1000"] = true;
+        unlockAchievement("achievement-1000");
+    }
+    
+    // 10 уровень
+    if (level >= 10 && !achievements["level10"]) {
+        achievements["level10"] = true;
+        unlockAchievement("achievement-level10");
+    }
+}
+
+// Разблокировка достижения
+function unlockAchievement(achievementId) {
+    const achievementElement = document.getElementById(achievementId);
+    achievementElement.classList.add('unlocked');
+    
+    // Анимация
+    achievementElement.style.transform = 'scale(1.2)';
+    setTimeout(() => {
+        achievementElement.style.transform = 'scale(1)';
+    }, 300);
+    
+    // Всплывающее уведомление
+    showPopup(`Достижение разблокировано!`, achievementElement);
+}
+
+// Показ всплывающего сообщения
+function showPopup(text, element) {
+    const popup = document.createElement('div');
+    popup.className = 'coin-popup';
+    popup.textContent = text;
+    
+    const rect = element.getBoundingClientRect();
+    popup.style.left = rect.left + rect.width / 2 + 'px';
+    popup.style.top = rect.top + 'px';
+    
+    document.body.appendChild(popup);
+    
+    setTimeout(() => {
+        popup.remove();
+    }, 1000);
+}
+
+// Клик по монете
+coinButton.addEventListener('click', function() {
+    // Добавление монет
+    coins += clickValue;
+    
+    // Создание всплывающего текста
+    createCoinPopup(clickValue);
+    
+    // Анимация кнопки
+    this.style.transform = 'scale(0.85)';
+    setTimeout(() => {
+        this.style.transform = 'scale(1)';
+    }, 100);
+    
+    updateUI();
+});
+
+// Создание всплывающего текста при клике
+function createCoinPopup(value) {
+    const popup = document.createElement('div');
+    popup.className = 'coin-popup';
+    popup.textContent = `+${value}`;
+    
+    const rect = coinButton.getBoundingClientRect();
+    const x = rect.left + Math.random() * rect.width;
+    const y = rect.top + Math.random() * rect.height;
+    
+    popup.style.left = x + 'px';
+    popup.style.top = y + 'px';
+    
+    document.body.appendChild(popup);
+    
+    setTimeout(() => {
+        popup.remove();
+    }, 1000);
+}
+
+// Улучшение клика
+upgradeButton.addEventListener('click', function() {
+    if (coins >= clickUpgradeCost) {
+        coins -= clickUpgradeCost;
+        clickValue += 1;
+        clickUpgradeCost = Math.floor(clickUpgradeCost * 1.5);
+        
+        // Анимация кнопки
+        this.style.transform = 'scale(0.95)';
+        setTimeout(() => {
+            this.style.transform = 'scale(1)';
+        }, 100);
+        
+        updateUI();
+    }
+});
+
+// Покупка автокликера
+autoclickerButton.addEventListener('click', function() {
+    if (coins >= autoClickerCost) {
+        coins -= autoClickerCost;
+        autoClickers += 1;
+        autoClickerCost = Math.floor(autoClickerCost * 1.7);
+        
+        // Анимация кнопки
+        this.style.transform = 'scale(0.95)';
+        setTimeout(() => {
+            this.style.transform = 'scale(1)';
+        }, 100);
+        
+        updateUI();
+    }
+});
+
+// Запуск автокликеров
+function startAutoClickers() {
+    setInterval(function() {
+        if (autoClickers > 0) {
+            coins += autoClickers;
+            updateUI();
             
-            // Добавляем стиль для анимации
-            const style = document.createElement('style');
-            style.textContent = `
-                @keyframes fadeInUp {
-                    from {
-                        opacity: 0;
-                        transform: translateY(20px);
-                    }
-                    to {
-                        opacity: 1;
-                        transform: translateY(0);
-                    }
-                }
-            `;
-            document.head.appendChild(style);
+            // Создание нескольких всплывающих текстов
+            for (let i = 0; i < Math.min(autoClickers, 5); i++) {
+                setTimeout(() => {
+                    createAutoClickerPopup();
+                }, i * 100);
+            }
+        }
+    }, 1000); // Каждую секунду
+}
+
+// Создание всплывающего текста для автокликера
+function createAutoClickerPopup() {
+    const popup = document.createElement('div');
+    popup.className = 'coin-popup';
+    popup.textContent = `+1`;
+    popup.style.color = '#ff5722';
+    
+    // Случайная позиция в верхней части экрана
+    const x = Math.random() * window.innerWidth;
+    const y = Math.random() * 100;
+    
+    popup.style.left = x + 'px';
+    popup.style.top = y + 'px';
+    
+    document.body.appendChild(popup);
+    
+    setTimeout(() => {
+        popup.remove();
+    }, 1000);
+}
+
+// Сброс игры
+resetButton.addEventListener('click', function() {
+    if (confirm('Вы уверены, что хотите сбросить весь прогресс?')) {
+        coins = 0;
+        level = 1;
+        clickValue = 1;
+        clickUpgradeCost = 10;
+        autoClickers = 0;
+        autoClickerCost = 50;
+        achievements = {
+            "100": false,
+            "500": false,
+            "1000": false,
+            "level10": false
+        };
+        
+        // Сброс визуального состояния достижений
+        document.querySelectorAll('.achievement').forEach(achievement => {
+            achievement.classList.remove('unlocked');
         });
+        
+        localStorage.removeItem('orangeClickerSave');
+        updateUI();
+        
+        // Анимация кнопки сброса
+        this.style.transform = 'scale(0.95)';
+        setTimeout(() => {
+            this.style.transform = 'scale(1)';
+        }, 100);
+    }
+});
+
+// Запуск игры при загрузке страницы
+window.addEventListener('DOMContentLoaded', initGame);
     </script>
-</body>
-    </html>
-    <!DOCTYPE html>
-<html lang="ru">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Часть 1: HTML структура игры</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-
-        body {
-            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
-            color: #f0f0f0;
-            min-height: 100vh;
-            line-height: 1.6;
-        }
-
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-
-        .header {
-            text-align: center;
-            padding: 30px 20px;
-            background: linear-gradient(90deg, #ff5722, #ff9800);
-            border-radius: 15px;
-            margin-bottom: 30px;
-            box-shadow: 0 5px 15px rgba(255, 87, 34, 0.4);
-        }
-
-        .header h1 {
-            font-size: 2.5rem;
-            margin-bottom: 10px;
-            color: white;
-        }
-
-        .header p {
-            font-size: 1.2rem;
-            opacity: 0.9;
-            max-width: 800px;
-            margin: 0 auto;
-        }
-
-        .nav {
-            display: flex;
-            justify-content: center;
-            gap: 15px;
-            margin-bottom: 30px;
-            flex-wrap: wrap;
-        }
-
-        .nav-btn {
-            padding: 12px 25px;
-            background: #333;
-            color: #ff9800;
-            border: 2px solid #ff9800;
-            border-radius: 8px;
-            text-decoration: none;
-            font-weight: bold;
-            transition: all 0.3s;
-        }
-
-        .nav-btn:hover {
-            background: #ff9800;
-            color: #333;
-            transform: translateY(-3px);
-        }
-
-        .nav-btn.active {
-            background: #ff5722;
-            color: white;
-            border-color: #ff5722;
-        }
-
-        .code-container {
-            background: #1e1e1e;
-            border-radius: 10px;
-            overflow: hidden;
-            margin-bottom: 30px;
-            border: 2px solid #444;
-        }
-
-        .code-header {
-            background: #2d2d2d;
-            padding: 15px 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 2px solid #ff5722;
-        }
-
-        .code-header h2 {
-            color: #ff9800;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .copy-btn {
-            background: #ff5722;
-            color: white;
-            border: none;
-            padding: 8px 15px;
-            border-radius: 5px;
-            cursor: pointer;
-            font-weight: bold;
-            transition: all 0.3s;
-        }
-
-        .copy-btn:hover {
-            background: #ff9800;
-            transform: scale(1.05);
-        }
-
-        .code-content {
-            padding: 20px;
-            overflow-x: auto;
-            max-height: 600px;
-        }
-
-        pre {
-            color: #f8f8f2;
-            font-family: 'Consolas', 'Monaco', monospace;
-            font-size: 14px;
-            line-height: 1.5;
-            margin: 0;
-        }
-
-        .html-tag { color: #ff79c6; }
-        .html-attr { color: #50fa7b; }
-        .html-value { color: #f1fa8c; }
-        .html-comment { color: #6272a4; font-style: italic; }
-        .html-text { color: #f8f8f2; }
-
-        .instructions {
-            background: #2d2d2d;
-            border-radius: 10px;
-            padding: 25px;
-            margin-top: 30px;
-            border-left: 5px solid #ff9800;
-        }
-
-        .instructions h3 {
-            color: #ff9800;
-            margin-bottom: 15px;
-        }
-
-        .instructions ul {
-            padding-left: 20px;
-            margin-bottom: 20px;
-        }
-
-        .instructions li {
-            margin-bottom: 10px;
-        }
-
-        .note {
-            background: #444;
-            padding: 15px;
-            border-radius: 8px;
-            margin-top: 20px;
-            border-left: 4px solid #ff5722;
-        }
-
-        .note strong {
-            color: #ff9800;
-        }
-
-        .footer {
-            text-align: center;
-            margin-top: 40px;
-            padding: 20px;
-            color: #888;
-            font-size: 0.9rem;
-            border-top: 1px solid #444;
-        }
-
-        @media (max-width: 768px) {
-            .code-content {
-                padding: 10px;
-            }
-            
-            pre {
-                font-size: 12px;
-            }
-        }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <div class="header">
-            <h1>📄 Часть 1: HTML структура игры</h1>
-            <p>Основная разметка игры "Оранжевый Кликер"</p>
-        </div>
-
-        <div class="nav">
-            <a href="index.html" class="nav-btn">🏠 На главную</a>
-            <a href="part1.html" class="nav-btn active">📄 HTML</a>
-            <a href="part2.html" class="nav-btn">🎨 CSS</a>
-            <a href="part3.html" class="nav-btn">⚡ JavaScript</a>
-        </div>
-
-        <div class="code-container">
-            <div class="code-header">
-                <h2><i class="fas fa-code"></i> index.html (полный код)</h2>
-                <button class="copy-btn" onclick="copyCode()">📋 Копировать код</button>
-            </div>
-            <div class="code-content">
-                <pre id="htmlCode"><code><span class="html-tag">&lt;!DOCTYPE html&gt;</span>
-<span class="html-tag">&lt;html</span> <span class="html-attr">lang</span>=<span class="html-value">"ru"</span><span class="html-tag">&gt;</span>
-<span class="html-tag">&lt;head&gt;</span>
-    <span class="html-tag">&lt;meta</span> <span class="html-attr">charset</span>=<span class="html-value">"UTF-8"</span><span class="html-tag">&gt;</span>
-    <span class="html-tag">&lt;meta</span> <span class="html-attr">name</span>=<span class="html-value">"viewport"</span> <span class="html-attr">content</span>=<span class="html-value">"width=device-width, initial-scale=1.0"</span><span class="html-tag">&gt;</span>
-    <span class="html-tag">&lt;title&gt;</span><span class="html-text">Оранжевый Кликер</span><span class="html-tag">&lt;/title&gt;</span>
-    <span class="html-comment">&lt;!-- Подключение стилей --&gt;</span>
-    <span class="html-tag">&lt;link</span> <span class="html-attr">rel</span>=<span class="html-value">"stylesheet"</span> <span class="html-attr">href</span>=<span class="html-value">"style.css"</span><span class="html-tag">&gt;</span>
-    <span class="html-tag">&lt;link</span> <span class="html-attr">rel</span>=<span class="html-value">"stylesheet"</span> <span class="html-attr">href</span>=<span class="html-value">"https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"</span><span class="html-tag">&gt;</span>
-    <span class="html-tag">&lt;link</span> <span class="html-attr">href</span>=<span class="html-value">"https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap"</span> <span class="html-attr">rel</span>=<span class="html-value">"stylesheet"</span><span class="html-tag">&gt;</span>
-<span class="html-tag">&lt;/head&gt;</span>
-<span class="html-tag">&lt;body&gt;</span>
-    <span class="html-tag">&lt;div</span> <span class="html-attr">class</span>=<span class="html-value">"container"</span><span class="html-tag">&gt;</span>
-        <span class="html-tag">&lt;header&gt;</span>
-            <span class="html-tag">&lt;div</span> <span class="html-attr">class</span>=<span class="html-value">"stats"</span><span class="html-tag">&gt;</span>
-                <span class="html-tag">&lt;div</span> <span class="html-attr">class</span>=<span class="html-value">"stat-item"</span><span class="html-tag">&gt;</span>
-                    <span class="html-tag">&lt;i</span> <span class="html-attr">class</span>=<span class="html-value">"fas fa-coins"</span><span class="html-tag">&gt;&lt;/i&gt;</span>
-                    <span class="html-tag">&lt;span</span> <span class="html-attr">id</span>=<span class="html-value">"coins"</span><span class="html-tag">&gt;</span><span class="html-text">0</span><span class="html-tag">&lt;/span&gt;</span>
-                    <span class="html-tag">&lt;span</span> <span class="html-attr">class</span>=<span class="html-value">"stat-label"</span><span class="html-tag">&gt;</span><span class="html-text">Монеты</span><span class="html-tag">&lt;/span&gt;</span>
-                <span class="html-tag">&lt;/div&gt;</span>
-                <span class="html-tag">&lt;div</span> <span class="html-attr">class</span>=<span class="html-value">"stat-item"</span><span class="html-tag">&gt;</span>
-                    <span class="html-tag">&lt;i</span> <span class="html-attr">class</span>=<span class="html-value">"fas fa-chart-line"</span><span class="html-tag">&gt;&lt;/i&gt;</span>
-                    <span class="html-tag">&lt;span</span> <span class="html-attr">id</span>=<span class="html-value">"level"</span><span class="html-tag">&gt;</span><span class="html-text">1</span><span class="html-tag">&lt;/span&gt;</span>
-                    <span class="html-tag">&lt;span</span> <span class="html-attr">class</span>=<span class="html-value">"stat-label"</span><span class="html-tag">&gt;</span><span class="html-text">Уровень</span><span class="html-tag">&lt;/span&gt;</span>
-                <span class="html-tag">&lt;/div&gt;</span>
-                <span class="html-tag">&lt;div</span> <span class="html-attr">class</span>=<span class="html-value">"stat-item"</span><span class="html-tag">&gt;</span>
-                    <span class="html-tag">&lt;i</span> <span class="html-attr">class</span>=<span class="html-value">"fas fa-hand-pointer"</span><span class="html-tag">&gt;&lt;/i&gt;</span>
-                    <span class="html-tag">&lt;span</span> <span class="html-attr">id</span>=<span class="html-value">"click-value"</span><span class="html-tag">&gt;</span><span class="html-text">1</span><span class="html-tag">&lt;/span&gt;</span>
-                    <span class="html-tag">&lt;span</span> <span class="html-attr">class</span>=<span class="html-value">"stat-label"</span><span class="html-tag">&gt;</span><span class="html-text">За клик</span><span class="html-tag">&lt;/span&gt;</span>
-                <span class="html-tag">&lt;/div&gt;</span>
-                <span class="html-tag">&lt;div</span> <span class="html-attr">class</span>=<span class="html-value">"stat-item"</span><span class="html-tag">&gt;</span>
-                    <span class="html-tag">&lt;i</span> <span class="html-attr">class</span>=<span class="html-value">"fas fa-robot"</span><span class="html-tag">&gt;&lt;/i&gt;</span>
-                    <span class="html-tag">&lt;span</span> <span class="html-attr">id</span>=<span class="html-value">"auto-clickers"</span><span class="html-tag">&gt;</span><span class="html-text">0</span><span class="html-tag">&lt;/span&gt;</span>
-                    <span class="html-tag">&lt;span</span> <span class="html-attr">class</span>=<span class="html-value">"stat-label"</span><span class="html-tag">&gt;</span><span class="html-text">Автокликеры</span><span class="html-tag">&lt;/span&gt;</span>
-                <span class="html-tag">&lt;/div&gt;</span>
-            <span class="html-tag">&lt;/div&gt;</span>
-        <span class="html-tag">&lt;/header&gt;</span>
-
-        <span class="html-tag">&lt;main&gt;</span>
-            <span class="html-tag">&lt;div</span> <span class="html-attr">class</span>=<span class="html-value">"coin-container"</span><span class="html-tag">&gt;</span>
-                <span class="html-tag">&lt;button</span> <span class="html-attr">id</span>=<span class="html-value">"coin-button"</span> <span class="html-attr">class</span>=<span class="html-value">"coin-button"</span><span class="html-tag">&gt;</span>
-                    <span class="html-tag">&lt;i</span> <span class="html-attr">class</span>=<span class="html-value">"fas fa-coins"</span><span class="html-tag">&gt;&lt;/i&gt;</span>
-                    <span class="html-tag">&lt;div</span> <span class="html-attr">class</span>=<span class="html-value">"coin-shine"</span><span class="html-tag">&gt;&lt;/div&gt;</span>
-                <span class="html-tag">&lt;/button&gt;</span>
-                <span class="html-tag">&lt;div</span> <span class="html-attr">class</span>=<span class="html-value">"click-instruction"</span><span class="html-tag">&gt;</span><span class="html-text">Кликни на монету!</span><span class="html-tag">&lt;/div&gt;</span>
-            <span class="html-tag">&lt;/div&gt;</span>
-
-            <span class="html-tag">&lt;div</span> <span class="html-attr">class</span>=<span class="html-value">"upgrades"</span><span class="html-tag">&gt;</span>
-                <span class="html-tag">&lt;div</span> <span class="html-attr">class</span>=<span class="html-value">"upgrade-section"</span><span class="html-tag">&gt;</span>
-                    <span class="html-tag">&lt;h2&gt;</span><span class="html-tag">&lt;i</span> <span class="html-attr">class</span>=<span class="html-value">"fas fa-arrow-up"</span><span class="html-tag">&gt;&lt;/i&gt;</span><span class="html-text"> Улучшение клика</span><span class="html-tag">&lt;/h2&gt;</span>
-                    <span class="html-tag">&lt;p&gt;</span><span class="html-text">Увеличивает количество монет за каждый клик</span><span class="html-tag">&lt;/p&gt;</span>
-                    <span class="html-tag">&lt;button</span> <span class="html-attr">id</span>=<span class="html-value">"upgrade-button"</span> <span class="html-attr">class</span>=<span class="html-value">"upgrade-btn"</span><span class="html-tag">&gt;</span>
-                        <span class="html-tag">&lt;span</span> <span class="html-attr">class</span>=<span class="html-value">"upgrade-text"</span><span class="html-tag">&gt;</span><span class="html-text">Улучшить клик</span><span class="html-tag">&lt;/span&gt;</span>
-                        <span class="html-tag">&lt;span</span> <span class="html-attr">class</span>=<span class="html-value">"upgrade-cost"</span><span class="html-tag">&gt;</span><span class="html-text">Стоимость: </span><span class="html-tag">&lt;span</span> <span class="html-attr">id</span>=<span class="html-value">"upgrade-cost"</span><span class="html-tag">&gt;</span><span class="html-text">10</span><span class="html-tag">&lt;/span&gt;</span><span class="html-text"> монет</span><span class="html-tag">&lt;/span&gt;</span>
-                    <span class="html-tag">&lt;/button&gt;</span>
-                    <span class="html-tag">&lt;div</span> <span class="html-attr">class</span>=<span class="html-value">"upgrade-info"</span><span class="html-tag">&gt;</span>
-                        <span class="html-text">Текущий бонус: </span><span class="html-tag">&lt;span</span> <span class="html-attr">id</span>=<span class="html-value">"click-bonus"</span><span class="html-tag">&gt;</span><span class="html-text">1</span><span class="html-tag">&lt;/span&gt;</span><span class="html-text"> монета за клик</span>
-                    <span class="html-tag">&lt;/div&gt;</span>
-                <span class="html-tag">&lt;/div&gt;</span>
-
-                <span class="html-tag">&lt;div</span> <span class="html-attr">class</span>=<span class="html-value">"upgrade-section"</span><span class="html-tag">&gt;</span>
-                    <span class="html-tag">&lt;h2&gt;</span><span class="html-tag">&lt;i</span> <span class="html-attr">class</span>=<span class="html-value">"fas fa-robot"</span><span class="html-tag">&gt;&lt;/i&gt;</span><span class="html-text"> Автокликер</span><span class="html-tag">&lt;/h2&gt;</span>
-                    <span class="html-tag">&lt;p&gt;</span><span class="html-text">Автоматически кликает каждые 10 секунд</span><span class="html-tag">&lt;/p&gt;</span>
-                    <span class="html-tag">&lt;button</span> <span class="html-attr">id</span>=<span class="html-value">"autoclicker-button"</span> <span class="html-attr">class</span>=<span class="html-value">"upgrade-btn"</span><span class="html-tag">&gt;</span>
-                        <span class="html-tag">&lt;span</span> <span class="html-attr">class</span>=<span class="html-value">"upgrade-text"</span><span class="html-tag">&gt;</span><span class="html-text">Купить автокликер</span><span class="html-tag">&lt;/span&gt;</span>
-                        <span class="html-tag">&lt;span</span> <span class="html-attr">class</span>=<span class="html-value">"upgrade-cost"</span><span class="html-tag">&gt;</span><span class="html-text">Стоимость: </span><span class="html-tag">&lt;span</span> <span class="html-attr">id</span>=<span class="html-value">"autoclicker-cost"</span><span class="html-tag">&gt;</span><span class="html-text">50</span><span class="html-tag">&lt;/span&gt;</span><span class="html-text"> монет</span><span class="html-tag">&lt;/span&gt;</span>
-                    <span class="html-tag">&lt;/button&gt;</span>
-                    <span class="html-tag">&lt;div</span> <span class="html-attr">class</span>=<span class="html-value">"upgrade-info"</span><span class="html-tag">&gt;</span>
-                        <span class="html-text">Доход: </span><span class="html-tag">&lt;span</span> <span class="html-attr">id</span>=<span class="html-value">"autoclicker-income"</span><span class="html-tag">&gt;</span><span class="html-text">0</span><span class="html-tag">&lt;/span&gt;</span><span class="html-text"> монет/сек</span>
-                    <span class="html-tag">&lt;/div&gt;</span>
-                <span class="html-tag">&lt;/div&gt;</span>
-            <span class="html-tag">&lt;/div&gt;</span>
-
-            <span class="html-tag">&lt;div</span> <span class="html-attr">class</span>=<span class="html-value">"achievements"</span><span class="html-tag">&gt;</span>
-                <span class="html-tag">&lt;h2&gt;</span><span class="html-tag">&lt;i</span> <span class="html-attr">class</span>=<span class="html-value">"fas fa-trophy"</span><span class="html-tag">&gt;&lt;/i&gt;</span><span class="html-text"> Достижения</span><span class="html-tag">&lt;/h2&gt;</span>
-                <span class="html-tag">&lt;div</span> <span class="html-attr">class</span>=<span class="html-value">"achievement-list"</span><span class="html-tag">&gt;</span>
-                    <span class="html-tag">&lt;div</span> <span class="html-attr">class</span>=<span class="html-value">"achievement"</span> <span class="html-attr">id</span>=<span class="html-value">"achievement-100"</span><span class="html-tag">&gt;</span>
-                        <span class="html-tag">&lt;i</
-                                                    <span class="html-tag">&lt;i</span> <span class="html-attr">class</span>=<span class="html-value">"fas fa-copper-coin"</span><span class="html-tag">&gt;&lt;/i&gt;</span>
-                        <span class="html-tag">&lt;span&gt;</span><span class="html-text">100 монет</span><span class="html-tag">&lt;/span&gt;</span>
-                    <span class="html-tag">&lt;/div&gt;</span>
-                    <span class="html-tag">&lt;div</span> <span class="html-attr">class</span>=<span class="html-value">"achievement"</span> <span class="html-attr">id</span>=<span class="html-value">"achievement-500"</span><span class="html-tag">&gt;</span>
-                        <span class="html-tag">&lt;i</span> <span class="html-attr">class</span>=<span class="html-value">"fas fa-silver-coin"</span><span class="html-tag">&gt;&lt;/i&gt;</span>
-                        <span class="html-tag">&lt;span&gt;</span><span class="html-text">500 монет</span><span class="html-tag">&lt;/span&gt;</span>
-                    <span class="html-tag">&lt;/div&gt;</span>
-                    <span class="html-tag">&lt;div</span> <span class="html-attr">class</span>=<span class="html-value">"achievement"</span> <span class="html-attr">id</span>=<span class="html-value">"achievement-1000"</span><span class="html-tag">&gt;</span>
-                        <span class="html-tag">&lt;i</span> <span class="html-attr">class</span>=<span class="html-value">"fas fa-gold-coin"</span><span class="html-tag">&gt;&lt;/i&gt;</span>
-                        <span class="html-tag">&lt;span&gt;</span><span class="html-text">1000 монет</span><span class="html-tag">&lt;/span&gt;</span>
-                    <span class="html-tag">&lt;/div&gt;</span>
-                    <span class="html-tag">&lt;div</span> <span class="html-attr">class</span>=<span class="html-value">"achievement"</span> <span class="html-attr">id</span>=<span class="html-value">"achievement-level10"</span><span class="html-tag">&gt;</span>
-                        <span class="html-tag">&lt;i</span> <span class="html-attr">class</span>=<span class="html-value">"fas fa-rocket"</span><span class="html-tag">&gt;&lt;/i&gt;</span>
-                        <span class="html-tag">&lt;span&gt;</span><span class="html-text">10 уровень</span><span class="html-tag">&lt;/span&gt;</span>
-                    <span class="html-tag">&lt;/div&gt;</span>
-                <span class="html-tag">&lt;/div&gt;</span>
-            <span class="html-tag">&lt;/div&gt;</span>
-        <span class="html-tag">&lt;/main&gt;</span>
-
-        <span class="html-tag">&lt;footer&gt;</span>
-            <span class="html-tag">&lt;div</span> <span class="html-attr">class</span>=<span class="html-value">"progress-save"</span><span class="html-tag">&gt;</span>
-                <span class="html-tag">&lt;span&gt;</span><span class="html-text">Прогресс автоматически сохраняется</span><span class="html-tag">&lt;/span&gt;</span>
-                <span class="html-tag">&lt;button</span> <span class="html-attr">id</span>=<span class="html-value">"reset-button"</span> <span class="html-attr">class</span>=<span class="html-value">"reset-btn"</span><span class="html-tag">&gt;</span>
-                    <span class="html-tag">&lt;i</span> <span class="html-attr">class</span>=<span class="html-value">"fas fa-trash"</span><span class="html-tag">&gt;&lt;/i&gt;</span><span class="html-text"> Сбросить прогресс</span>
-                <span class="html-tag">&lt;/button&gt;</span>
-            <span class="html-tag">&lt;/div&gt;</span>
-            <span class="html-tag">&lt;div</span> <span class="html-attr">class</span>=<span class="html-value">"hint"</span><span class="html-tag">&gt;</span>
-                <span class="html-tag">&lt;i</span> <span class="html-attr">class</span>=<span class="html-value">"fas fa-lightbulb"</span><span class="html-tag">&gt;&lt;/i&gt;</span><span class="html-text"> Кликай на монету, улучшай клик и покупай автокликеры!</span>
-            <span class="html-tag">&lt;/div&gt;</span>
-        <span class="html-tag">&lt;/footer&gt;</span>
-    <span class="html-tag">&lt;/div&gt;</span>
-
-    <span class="html-comment">&lt;!-- Подключение JavaScript файла --&gt;</span>
-    <span class="html-tag">&lt;script</span> <span class="html-attr">src</span>=<span class="html-value">"script.js"</span><span class="html-tag">&gt;&lt;/script&gt;</span>
-<span class="html-tag">&lt;/body&gt;</span>
-<span class="html-tag">&lt;/html&gt;</span></code></pre>
-            </div>
-        </div>
-
-        <div class="instructions">
-            <h3>📋 Инструкция по использованию:</h3>
-            <ul>
-                <li>Скопируйте весь код выше</li>
-                <li>Вставьте его в новый файл с названием <code>index.html</code></li>
-                <li>Сохраните файл в отдельной папке</li>
-                <li>Перейдите к Части 2 для получения CSS стилей</li>
-            </ul>
-            
-            <div class="note">
-                <strong>Важно:</strong> Этот файл содержит только HTML разметку. Для работы игры нужно добавить CSS стили из Части 2 и JavaScript код из Части 3.
-            </div>
-        </div>
-
-        <div class="footer">
-            <p>Часть 1 из 3: HTML структура игры "Оранжевый Кликер"</p>
-        </div>
-    </div>
-
-    <script>
-        function copyCode() {
-            const codeElement = document.getElementById('htmlCode');
-            const textArea = document.createElement('textarea');
-            textArea.value = codeElement.textContent;
-            document.body.appendChild(textArea);
-            textArea.select();
-            document.execCommand('copy');
-            document.body.removeChild(textArea);
-            
-            // Показываем уведомление
-            const button = document.querySelector('.copy-btn');
-            const originalText = button.textContent;
-            button.textContent = '✅ Скопировано!';
-            button.style.background = '#50fa7b';
-            button.style.color = '#1e1e1e';
-            
-            setTimeout(() => {
-                button.textContent = originalText;
-                button.style.background = '';
-                button.style.color = '';
-            }, 2000);
-        }
-    </script>
-</body>
-    </html>
-    <!DOCTYPE html>
-<html lang="ru">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Часть 2: CSS стили игры</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-
-        body {
-            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
-            color: #f0f0f0;
-            min-height: 100vh;
-            line-height: 1.6;
-        }
-
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-
-        .header {
-            text-align: center;
-            padding: 30px 20px;
-            background: linear-gradient(90deg, #ff9800, #ff5722);
-            border-radius: 15px;
-            margin-bottom: 30px;
-            box-shadow: 0 5px 15px rgba(255, 87, 34, 0.4);
-        }
-
-        .header h1 {
-            font-size: 2.5rem;
-            margin-bottom: 10px;
-            color: white;
-        }
-
-        .header p {
-            font-size: 1.2rem;
-            opacity: 0.9;
-            max-width: 800px;
-            margin: 0 auto;
-        }
-
-        .nav {
-            display: flex;
-            justify-content: center;
-            gap: 15px;
-            margin-bottom: 30px;
-            flex-wrap: wrap;
-        }
-
-        .nav-btn {
-            padding: 12px 25px;
-            background: #333;
-            color: #ff9800;
-            border: 2px solid #ff9800;
-            border-radius: 8px;
-            text-decoration: none;
-            font-weight: bold;
-            transition: all 0.3s;
-        }
-
-        .nav-btn:hover {
-            background: #ff9800;
-            color: #333;
-            transform: translateY(-3px);
-        }
-
-        .nav-btn.active {
-            background: #ff5722;
-            color: white;
-            border-color: #ff5722;
-        }
-
-        .code-container {
-            background: #1e1e1e;
-            border-radius: 10px;
-            overflow: hidden;
-            margin-bottom: 30px;
-            border: 2px solid #444;
-        }
-
-        .code-header {
-            background: #2d2d2d;
-            padding: 15px 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 2px solid #ff9800;
-        }
-
-        .code-header h2 {
-            color: #ff9800;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .copy-btn {
-            background: #ff9800;
-            color: white;
-            border: none;
-            padding: 8px 15px;
-            border-radius: 5px;
-            cursor: pointer;
-            font-weight: bold;
-            transition: all 0.3s;
-        }
-
-        .copy-btn:hover {
-            background: #ff5722;
-            transform: scale(1.05);
-        }
-
-        .code-content {
-            padding: 20px;
-            overflow-x: auto;
-            max-height: 600px;
-        }
-
-        pre {
-            color: #f8f8f2;
-            font-family: 'Consolas', 'Monaco', monospace;
-            font-size: 14px;
-            line-height: 1.5;
-            margin: 0;
-        }
-
-        .css-selector { color: #ff79c6; }
-        .css-property { color: #50fa7b; }
-        .css-value { color: #f1fa8c; }
-        .css-comment { color: #6272a4; font-style: italic; }
-        .css-bracket { color: #f8f8f2; }
-        .css-number { color: #bd93f9; }
-
-        .instructions {
-            background: #2d2d2d;
-            border-radius: 10px;
-            padding: 25px;
-            margin-top: 30px;
-            border-left: 5px solid #ff9800;
-        }
-
-        .instructions h3 {
-            color: #ff9800;
-            margin-bottom: 15px;
-        }
-
-        .instructions ul {
-            padding-left: 20px;
-            margin-bottom: 20px;
-        }
-
-        .instructions li {
-            margin-bottom: 10px;
-        }
-
-        .note {
-            background: #444;
-            padding: 15px;
-            border-radius: 8px;
-            margin-top: 20px;
-            border-left: 4px solid #ff5722;
-        }
-
-        .note strong {
-            color: #ff9800;
-        }
-
-        .footer {
-            text-align: center;
-            margin-top: 40px;
-            padding: 20px;
-            color: #888;
-            font-size: 0.9rem;
-            border-top: 1px solid #444;
-        }
-
-        @media (max-width: 768px) {
-            .code-content {
-                padding: 10px;
-            }
-            
-            pre {
-                font-size: 12px;
-            }
-        }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <div class="header">
-            <h1>🎨 Часть 2: CSS стили игры</h1>
-            <p>Стилизация игры "Оранжевый Кликер" в ярко-оранжевых тонах</p>
-        </div>
-
-        <div class="nav">
-            <a href="index.html" class="nav-btn">🏠 На главную</a>
-            <a href="part1.html" class="nav-btn">📄 HTML</a>
-            <a href="part2.html" class="nav-btn active">🎨 CSS</a>
-            <a href="part3.html" class="nav-btn">⚡ JavaScript</a>
-        </div>
-
-        <div class="code-container">
-            <div class="code-header">
-                <h2><i class="fas fa-paint-brush"></i> style.css (полный код)</h2>
-                <button class="copy-btn" onclick="copyCode()">📋 Копировать код</button>
-            </div>
-            <div class="code-content">
-                <pre id="cssCode"><code><span class="css-comment">/* Основные стили */</span>
-<span class="css-selector">*</span> <span class="css-bracket">{</span>
-    <span class="css-property">margin</span>: <span class="css-number">0</span>;
-    <span class="css-property">padding</span>: <span class="css-number">0</span>;
-    <span class="css-property">box-sizing</span>: <span class="css-value">border-box</span>;
-    <span class="css-property">font-family</span>: <span class="css-value">'Roboto', sans-serif</span>;
-<span class="css-bracket">}</span>
-
-<span class="css-selector">body</span> <span class="css-bracket">{</span>
-    <span class="css-property">background</span>: <span class="css-value">linear-gradient(135deg, #ff7b00 0%, #ff5500 100%)</span>;
-    <span class="css-property">min-height</span>: <span class="css-number">100vh</span>;
-    <span class="css-property">display</span>: <span class="css-value">flex</span>;
-    <span class="css-property">justify-content</span>: <span class="css-value">center</span>;
-    <span class="css-property">align-items</span>: <span class="css-value">center</span>;
-    <span class="css-property">padding</span>: <span class="css-number">20px</span>;
-    <span class="css-property">color</span>: <span class="css-value">#333</span>;
-<span class="css-bracket">}</span>
-
-<span class="css-selector">.container</span> <span class="css-bracket">{</span>
-    <span class="css-property">background-color</span>: <span class="css-value">rgba(255, 255, 255, 0.95)</span>;
-    <span class="css-property">width</span>: <span class="css-value">100%</span>;
-    <span class="css-property">max-width</span>: <span class="css-number">900px</span>;
-    <span class="css-property">border-radius</span>: <span class="css-number">20px</span>;
-    <span class="css-property">box-shadow</span>: <span class="css-number">0</span> <span class="css-number">15px</span> <span class="css-number">35px</span> <span class="css-value">rgba(255, 87, 34, 0.4)</span>;
-    <span class="css-property">overflow</span>: <span class="css-value">hidden</span>;
-    <span class="css-property">animation</span>: <span class="css-value">fadeIn 0.8s ease-out</span>;
-<span class="css-bracket">}</span>
-
-<span class="css-selector">@keyframes fadeIn</span> <span class="css-bracket">{</span>
-    <span class="css-selector">from</span> <span class="css-bracket">{</span> <span class="css-property">opacity</span>: <span class="css-number">0</span>; <span class="css-property">transform</span>: <span class="css-value">translateY(20px)</span>; <span class="css-bracket">}</span>
-    <span class="css-selector">to</span> <span class="css-bracket">{</span> <span class="css-property">opacity</span>: <span class="css-number">1</span>; <span class="css-property">transform</span>: <span class="css-value">translateY(0)</span>; <span class="css-bracket">}</span>
-<span class="css-bracket">}</span>
-
-<span class="css-selector">header</span> <span class="css-bracket">{</span>
-    <span class="css-property">background</span>: <span class="css-value">linear-gradient(90deg, #ff9800, #ff5722)</span>;
-    <span class="css-property">color</span>: <span class="css-value">white</span>;
-    <span class="css-property">padding</span>: <span class="css-number">20px</span>;
-    <span class="css-property">text-align</span>: <span class="css-value">center</span>;
-    <span class="css-property">border-bottom</span>: <span class="css-number">5px</span> <span class="css-value">solid #ffab40</span>;
-<span class="css-bracket">}</span>
-
-<span class="css-selector">.stats</span> <span class="css-bracket">{</span>
-    <span class="css-property">display</span>: <span class="css-value">flex</span>;
-    <span class="css-property">justify-content</span>: <span class="css-value">space-around</span>;
-    <span class="css-property">flex-wrap</span>: <span class="css-value">wrap</span>;
-    <span class="css-property">gap</span>: <span class="css-number">15px</span>;
-<span class="css-bracket">}</span>
-
-<span class="css-selector">.stat-item</span> <span class="css-bracket">{</span>
-    <span class="css-property">display</span>: <span class="css-value">flex</span>;
-    <span class="css-property">flex-direction</span>: <span class="css-value">column</span>;
-    <span class="css-property">align-items</span>: <span class="css-value">center</span>;
-    <span class="css-property">background</span>: <span class="css-value">rgba(255, 255, 255, 0.15)</span>;
-    <span class="css-property">padding</span>: <span class="css-number">15px</span> <span class="css-number">20px</span>;
-    <span class="css-property">border-radius</span>: <span class="css-number">15px</span>;
-    <span class="css-property">min-width</span>: <span class="css-number">130px</span>;
-    <span class="css-property">transition</span>: <span class="css-value">transform 0.3s</span>;
-<span class="css-bracket">}</span>
-
-<span class="css-selector">.stat-item:hover</span> <span class="css-bracket">{</span>
-    <span class="css-property">transform</span>: <span class="css-value">translateY(-5px)</span>;
-    <span class="css-property">background</span>: <span class="css-value">rgba(255, 255, 255, 0.25)</span>;
-<span class="css-bracket">}</span>
-
-<span class="css-selector">.stat-item i</span> <span class="css-bracket">{</span>
-    <span class="css-property">font-size</span>: <span class="css-number">2rem</span>;
-    <span class="css-property">margin-bottom</span>: <span class="css-number">8px</span>;
-    <span class="css-property">color</span>: <span class="css-value">#fff</span>;
-    <span class="css-property">text-shadow</span>: <span class="css-number">0</span> <span class="css-number">2px</span> <span class="css-number">5px</span> <span class="css-value">rgba(0, 0, 0, 0.2)</span>;
-<span class="css-bracket">}</span>
-
-<span class="css-selector">.stat-item span:first-of-type</span> <span class="css-bracket">{</span>
-    <span class="css-property">font-size</span>: <span class="css-number">1.8rem</span>;
-    <span class="css-property">font-weight</span>: <span class="css-number">700</span>;
-    <span class="css-property">margin-bottom</span>: <span class="css-number">5px</span>;
-<span class="css-bracket">}</span>
-
-<span class="css-selector">.stat-label</span> <span class="css-bracket">{</span>
-    <span class="css-property">font-size</span>: <span class="css-number">0.9rem</span>;
-    <span class="css-property">opacity</span>: <span class="css-number">0.9</span>;
-<span class="css-bracket">}</span>
-
-<span class="css-selector">main</span> <span class="css-bracket">{</span>
-    <span class="css-property">padding</span>: <span class="css-number">30px</span>;
-<span class="css-bracket">}</span>
-
-<span class="css-selector">.coin-container</span> <span class="css-bracket">{</span>
-    <span class="css-property">display</span>: <span class="css-value">flex</span>;
-    <span class="css-property">flex-direction</span>: <span class="css-value">column</span>;
-    <span class="css-property">align-items</span>: <span class="css-value">center</span>;
-    <span class="css-property">margin-bottom</span>: <span class="css-number">40px</span>;
-<span class="css-bracket">}</span>
-
-<span class="css-selector">.coin-button</span> <span class="css-bracket">{</span>
-    <span class="css-property">width</span>: <span class="css-number">180px</span>;
-    <span class="css-property">height</span>: <span class="css-number">180px</span>;
-    <span class="css-property">border-radius</span>: <span class="css-number">50%</span>;
-    <span class="css-property">background</span>: <span class="css-value">radial-gradient(circle at 30% 30%, #ffd54f, #ff9800)</span>;
-    <span class="css-property">border</span>: <span class="css-number">8px</span> <span class="css-value">solid #ff8f00</span>;
-    <span class="css-property">box-shadow</span>: 
-        <span class="css-number">0</span> <span class="css-number">0</span> <span class="css-number">30px</span> <span class="css-value">rgba(255, 152, 0, 0.8)</span>,
-        <span class="css-value">inset</span> <span class="css-number">0</span> <span class="css-number">0</span> <span class="css-number">30px</span> <span class="css-value">rgba(255, 235, 59, 0.7)</span>;
-    <span class="css-property">cursor</span>: <span class="css-value">pointer</span>;
-    <span class="css-property">position</span>: <span class="css-value">relative</span>;
-    <span class="css-property">transition</span>: <span class="css-value">transform 0.1s</span>;
-    <span class="css-property">animation</span>: <span class="css-value">coinGlow 2s infinite alternate</span>;
-<span class="css-bracket">}</span>
-
-<span class="css-selector">@keyframes coinGlow</span> <span class="css-bracket">{</span>
-    <span class="css-selector">from</span> <span class="css-bracket">{</span> <span class="css-property">box-shadow</span>: 
-        <span class="css-number">0</span> <span class="css-number">0</span> <span class="css-number">30px</span> <span class="css-value">rgba(255, 152, 0, 0.8)</span>,
-        <span class="css-value">inset</span> <span class="css-number">0</span> <span class="css-number">0</span> <span class="css-number">30px</span> <span class="css-value">rgba(255, 235, 59, 0.7)</span>; <span class="css-bracket">}</span>
-    <span class="css-selector">to</span> <span class="css-bracket">{</span> <span class="css-property">box-shadow</span>: 
-        <span class="css-number">0</span> <span class="css-number">0</span> <span class="css-number">40px</span> <span class="css-value">rgba(255, 152, 0, 1)</span>,
-        <span class="css-value">inset</span> <span class="css-number">0</span> <span class="css-number">0</span> <span class="css-number">40px</span> <span class="css-value">rgba(255, 235, 59, 0.9)</span>; <span class="css-bracket">}</span>
-<span class="css-bracket">}</span>
-
-<span class="css-selector">.coin-button:active</span> <span class="css-bracket">{</span>
-    <span class="css-property">transform</span>: <span class="css-value">scale(0.85)</span>;
-    <span class="css-property">animation</span>: <span class="css-value">none</span>;
-    <span class="css-property">box-shadow</span>: 
-        <span class="css-number">0</span> <span class="css-number">0</span> <span class="css-number">20px</span> <span class="css-value">rgba(255, 152, 0, 0.6)</span>,
-        <span class="css-value">inset</span> <span class="css-number">0</span> <span class="css-number">0</span> <span class="css-number">20px</span> <span class="css-value">rgba(255, 235, 59, 0.5)</span>;
-<span class="css-bracket">}</span>
-
-<span class="css-selector">.coin-button i</span> <span class="css-bracket">{</span>
-    <span class="css-property">font-size</span>: <span class="css-number">5rem</span>;
-    <span class="css-property">color</span>: <span class="css-value">#ff8f00</span>;
-    <span class="css-property">text-shadow</span>: <span class="css-number">0</span> <span class="css-number">5px</span> <span class="css-number">15px</span> <span class="css-value">rgba(0, 0, 0, 0.3)</span>;
-<span class="css-bracket">}</span>
-
-<span class="css-selector">.coin-shine</span> <span class="css-bracket">{</span>
-    <span class="css-property">position</span>: <span class="css-value">absolute</span>;
-    <span class="css-property">top</span>: <span class="css-number">15%</span>;
-    <span class="css-property">left</span>: <span class="css-number">15%</span>;
-    <span class="css-property">width</span>: <span class="css-number">40px</span>;
-    <span class="css-property">height</span>: <span class="css-number">40px</span>;
-    <span class="css-property">background</span>: <span class="css-value">rgba(255, 255, 255, 0.8)</span>;
-    <span class="css-property">border-radius</span>: <span class="css-number">50%</span>;
-    <span class="css-property">filter</span>: <span class="css-value">blur(5px)</span>;
-    <span class="css-property">animation</span>: <span class="css-value">shineMove 3s infinite linear</span>;
-<span class="css-bracket">}</span>
-
-<span class="css-selector">@keyframes shineMove</span> <span class="css-bracket">{</span>
-    <span class="css-number">0%</span> <span class="css-bracket">{</span> <span class="css-property">top</span>: <span class="css-number">15%</span>; <span class="css-property">left</span>: <span class="css-number">15%</span>; <span class="css-bracket">}</span>
-    <span class="css-number">25%</span> <span class="css-bracket">{</span> <span class="css-property">top</span>: <span class="css-number">20%</span>; <span class="css-property">left</span>: <span class="css-number">65%</span>; <span class="css-bracket">}</span>
-    <span class="css-number">50%</span> <span class="css-bracket">{</span> <span class="css-property">top</span>: <span class="css-number">65%</span>; <span class="css-property">left</span>: <span class="css-number">65%</span>; <span class="css-bracket">}</span>
-    <span class="css-number">75%</span> <span class="css-bracket">{</span> <span class="css-property">top</span>: <span class="css-number">65%</span>; <span class="css-property">left</span>: <span class="css-number">20%</span>; <span class="css-bracket">}</span>
-    <span class="css-number">100%</span> <span class="css-bracket">{</span> <span class="css-property">top</span>: <span class="css-number">15%</span>; <span class="css-property">left</span>: <span class="css-number">15%</span>; <span class="css-bracket">}</span>
-<span class="css-bracket">}</span>
-
-<span class="css-selector">.click-instruction</span> <span class="css-bracket">{</span>
-    <span class="css-property">margin-top</span>: <span class="css-number">20px</span>;
-    <span class="css-property">font-size</span>: <span class="css-number">1.2rem</span>;
-    <span class="css-property">color</span>: <span class="css-value">#ff6d00</span>;
-    <span class="css-property">font-weight</span>: <span class="css-number">500</span>;
-    <span class="css-property">text-align</span>: <span class="css-value">center</span>;
-    <span class="css-property">animation</span>: <span class="css-value">pulseText 2s infinite</span>;
-<span class="css-bracket">}</span>
-
-<span class="css-selector">@keyframes pulseText</span> <span class="css-bracket">{</span>
-    <span class="css-number">0%</span> <span class="css-bracket">{</span> <span class="css-property">opacity</span>: <span class="css-number">0.7</span>; <span class="css-bracket">}</span>
-    <span class="css-number">50%</span> <span class="css-bracket">{</span> <span class="css-property">opacity</span>: <span class="css-number">1</span
