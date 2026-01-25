@@ -1,832 +1,156 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Оранжевый Кликер</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
-    <style>
-        /* Все CSS стили будут вставлены сюда из style.html */
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Jikoli</title>
+
+<style>
+* {margin:0; padding:0; box-sizing:border-box; font-family:-apple-system, BlinkMacSystemFont, "SF Pro Display", sans-serif;}
+body {height:100vh; display:flex; justify-content:center; align-items:center; color:white; background: linear-gradient(135deg, #1e3c72, #2a5298);}
+.screen {display:none;}
+.active {display:block;}
+.app {width:330px; padding:25px; border-radius:30px; background:rgba(255,255,255,0.15); backdrop-filter:blur(15px); border:1px solid rgba(255,255,255,0.25); box-shadow:0 20px 40px rgba(0,0,0,0.3); text-align:center;}
+h1 {margin-bottom:15px;}
+.menu-btn {width:100%; padding:14px; margin-top:10px; border-radius:18px; background:rgba(255,255,255,0.25); border:none; color:white; font-size:18px; cursor:pointer;}
+.menu-btn:active {transform:scale(0.94);}
+.score {font-size:22px; margin-bottom:8px;}
+.multiplier {font-size:16px; opacity:0.85; margin-bottom:10px;}
+.click-btn {width:150px; height:150px; border-radius:50%; border:none; font-size:22px; color:white; cursor:pointer; margin-bottom:15px; animation:pulse 1.5s infinite;}
+@keyframes pulse {0% {box-shadow:0 0 0 0 rgba(255,255,255,0.4);} 70% {box-shadow:0 0 0 20px rgba(255,255,255,0);} 100% {box-shadow:0 0 0 0 rgba(255,255,255,0);}}
+.skin-default {background:rgba(255,255,255,0.3);}
+.skin-gold {background:linear-gradient(135deg, gold, orange); box-shadow:0 0 25px gold;}
+.skin-neon {background:linear-gradient(135deg, #00f2ff, #0066ff); box-shadow:0 0 25px #00f2ff;}
+.skin-plasma {background:linear-gradient(135deg, #ff00ff, #ff6600); box-shadow:0 0 30px #ff00ff;}
+.shop-item {padding:12px; margin-bottom:10px; border-radius:16px; background:rgba(255,255,255,0.2); cursor:pointer;}
+.shop-item:active {transform: scale(0.95);}
+.toast {position: fixed; top:-100px; left:50%; transform:translateX(-50%); background:rgba(255,255,255,0.25); backdrop-filter:blur(15px); padding:14px 22px; border-radius:20px; transition:0.4s; z-index:1000;}
+.toast.show {top:20px;}
+</style>
 </head>
+
 <body>
-    <div class="container">
-        <header>
-            <div class="stats">
-                <div class="stat-item">
-                    <i class="fas fa-coins"></i>
-                    <span id="coins">0</span>
-                    <span class="stat-label">Монеты</span>
-                </div>
-                <div class="stat-item">
-                    <i class="fas fa-chart-line"></i>
-                    <span id="level">1</span>
-                    <span class="stat-label">Уровень</span>
-                </div>
-                <div class="stat-item">
-                    <i class="fas fa-hand-pointer"></i>
-                    <span id="click-value">1</span>
-                    <span class="stat-label">За клик</span>
-                </div>
-                <div class="stat-item">
-                    <i class="fas fa-robot"></i>
-                    <span id="auto-clickers">0</span>
-                    <span class="stat-label">Автокликеры</span>
-                </div>
-            </div>
-        </header>
 
-        <main>
-            <div class="coin-container">
-                <button id="coin-button" class="coin-button">
-                    <i class="fas fa-coins"></i>
-                    <div class="coin-shine"></div>
-                </button>
-                <div class="click-instruction">Кликни на монету!</div>
-            </div>
+<div class="toast" id="toast"></div>
 
-            <div class="upgrades">
-                <div class="upgrade-section">
-                    <h2><i class="fas fa-arrow-up"></i> Улучшение клика</h2>
-                    <p>Увеличивает количество монет за каждый клик</p>
-                    <button id="upgrade-button" class="upgrade-btn">
-                        <span class="upgrade-text">Улучшить клик</span>
-                        <span class="upgrade-cost">Стоимость: <span id="upgrade-cost">10</span> монет</span>
-                    </button>
-                    <div class="upgrade-info">
-                        Текущий бонус: <span id="click-bonus">1</span> монета за клик
-                    </div>
-                </div>
-
-                <div class="upgrade-section">
-                    <h2><i class="fas fa-robot"></i> Автокликер</h2>
-                    <p>Автоматически кликает каждые 10 секунд</p>
-                    <button id="autoclicker-button" class="upgrade-btn">
-                        <span class="upgrade-text">Купить автокликер</span>
-                        <span class="upgrade-cost">Стоимость: <span id="autoclicker-cost">50</span> монет</span>
-                    </button>
-                    <div class="upgrade-info">
-                        Доход: <span id="autoclicker-income">0</span> монет/сек
-                    </div>
-                </div>
-            </div>
-
-            <div class="achievements">
-                <h2><i class="fas fa-trophy"></i> Достижения</h2>
-                <div class="achievement-list">
-                    <div class="achievement" id="achievement-100">
-                        <i class="fas fa-copper-coin"></i>
-                        <span>100 монет</span>
-                    </div>
-                    <div class="achievement" id="achievement-500">
-                        <i class="fas fa-silver-coin"></i>
-                        <span>500 монет</span>
-                    </div>
-                    <div class="achievement" id="achievement-1000">
-                        <i class="fas fa-gold-coin"></i>
-                        <span>1000 монет</span>
-                    </div>
-                    <div class="achievement" id="achievement-level10">
-                        <i class="fas fa-rocket"></i>
-                        <span>10 уровень</span>
-                    </div>
-                </div>
-            </div>
-        </main>
-
-        <footer>
-            <div class="progress-save">
-                <span>Прогресс автоматически сохраняется</span>
-                <button id="reset-button" class="reset-btn">
-                    <i class="fas fa-trash"></i> Сбросить прогресс
-                </button>
-            </div>
-            <div class="hint">
-                <i class="fas fa-lightbulb"></i> Кликай на монету, улучшай клик и покупай автокликеры!
-            </div>
-        </footer>
+<!-- МЕНЮ -->
+<div class="screen active" id="menu">
+    <div class="app">
+        <h1>🍏 Jikoli</h1>
+        <button class="menu-btn" onclick="openScreen('game')">▶ Играть</button>
+        <button class="menu-btn" onclick="openScreen('shop')">🛒 Магазин</button>
     </div>
+</div>
 
-    <script>
-        // Все JavaScript функции будут вставлены сюда из script.html
-    </script>
+<!-- ИГРА -->
+<div class="screen" id="game">
+    <div class="app">
+        <div class="score">Очки: <span id="score">0</span></div>
+        <div class="multiplier">Множитель: x<span id="multi">1</span></div>
+
+        <button id="clickBtn" class="click-btn skin-default" onclick="tap()">TAP</button>
+
+        <button class="menu-btn" onclick="openScreen('menu')">⬅ Назад</button>
+    </div>
+</div>
+
+<!-- МАГАЗИН -->
+<div class="screen" id="shop">
+    <div class="app">
+        <h1>🛒 Магазин</h1>
+
+        <div class="shop-item" onclick="buySkin('default', 0)">🎨 Стандарт — бесплатно</div>
+        <div class="shop-item" onclick="buySkin('gold', 200)">🥇 Золотой — 200</div>
+        <div class="shop-item" onclick="buySkin('neon', 400)">💎 Неон — 400</div>
+        <div class="shop-item" onclick="buySkin('plasma', 800)">🔥 Плазма — 800</div>
+
+        <hr style="margin:10px; opacity:0.3">
+
+        <div class="shop-item" onclick="buyBooster(2,30,100)">🚀 x2 (30с) — 100</div>
+        <div class="shop-item" onclick="buyBooster(4,20,200)">🚀 x4 (20с) — 200</div>
+        <div class="shop-item" onclick="buyBooster(6,15,400)">🚀 x6 (15с) — 400</div>
+        <div class="shop-item" onclick="buyBooster(10,10,800)">🚀 x10 (10с) — 800</div>
+
+        <button class="menu-btn" onclick="openScreen('menu')">⬅ Назад</button>
+    </div>
+</div>
+
+<script>
+let score = 0;
+let multiplier = 1;
+let skin = 'default';
+
+// ЭКРАНЫ
+function openScreen(id) {
+    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+}
+
+// TOAST
+function showToast(text) {
+    const t = document.getElementById('toast');
+    t.textContent = text;
+    t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 2500);
+}
+
+// ИГРА
+function tap() {
+    score += multiplier;
+    update();
+}
+
+function update() {
+    document.getElementById('score').textContent = score;
+    document.getElementById('multi').textContent = multiplier;
+    save();
+}
+
+// СКИНЫ
+function buySkin(name, price) {
+    if (score < price) return;
+    score -= price;
+    skin = name;
+    applySkin();
+    showToast("🎨 Скин применён");
+    update();
+}
+
+function applySkin() {
+    document.getElementById('clickBtn').className = `click-btn skin-${skin}`;
+}
+
+// БУСТЕРЫ
+function buyBooster(x, time, price) {
+    if (score < price) return;
+    score -= price;
+    multiplier = x;
+    showToast(`🚀 Множитель x${x}`);
+    update();
+
+    setTimeout(() => {
+        multiplier = 1;
+        showToast("⏱ Бустер закончился");
+        update();
+    }, time * 1000);
+}
+
+// SAVE / LOAD
+function save() {
+    localStorage.setItem('jikoliSave', JSON.stringify({ score, skin }));
+}
+
+function load() {
+    const data = JSON.parse(localStorage.getItem('jikoliSave'));
+    if (!data) return;
+    score = data.score || 0;
+    skin = data.skin || 'default';
+    applySkin();
+    update();
+}
+
+load();
+</script>
+
 </body>
 </html>
-<style>
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: 'Roboto', sans-serif;
-}
-
-body {
-    background: linear-gradient(135deg, #ff7b00 0%, #ff5500 100%);
-    min-height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 20px;
-    color: #333;
-}
-
-.container {
-    background-color: rgba(255, 255, 255, 0.95);
-    width: 100%;
-    max-width: 900px;
-    border-radius: 20px;
-    box-shadow: 0 15px 35px rgba(255, 87, 34, 0.4);
-    overflow: hidden;
-    animation: fadeIn 0.8s ease-out;
-}
-
-@keyframes fadeIn {
-    from { opacity: 0; transform: translateY(20px); }
-    to { opacity: 1; transform: translateY(0); }
-}
-
-header {
-    background: linear-gradient(90deg, #ff9800, #ff5722);
-    color: white;
-    padding: 20px;
-    text-align: center;
-    border-bottom: 5px solid #ffab40;
-}
-
-.stats {
-    display: flex;
-    justify-content: space-around;
-    flex-wrap: wrap;
-    gap: 15px;
-}
-
-.stat-item {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    background: rgba(255, 255, 255, 0.15);
-    padding: 15px 20px;
-    border-radius: 15px;
-    min-width: 130px;
-    transition: transform 0.3s;
-}
-
-.stat-item:hover {
-    transform: translateY(-5px);
-    background: rgba(255, 255, 255, 0.25);
-}
-
-.stat-item i {
-    font-size: 2rem;
-    margin-bottom: 8px;
-    color: #fff;
-    text-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-}
-
-.stat-item span:first-of-type {
-    font-size: 1.8rem;
-    font-weight: 700;
-    margin-bottom: 5px;
-}
-
-.stat-label {
-    font-size: 0.9rem;
-    opacity: 0.9;
-}
-
-main {
-    padding: 30px;
-}
-
-.coin-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin-bottom: 40px;
-}
-
-.coin-button {
-    width: 180px;
-    height: 180px;
-    border-radius: 50%;
-    background: radial-gradient(circle at 30% 30%, #ffd54f, #ff9800);
-    border: 8px solid #ff8f00;
-    box-shadow: 
-        0 0 30px rgba(255, 152, 0, 0.8),
-        inset 0 0 30px rgba(255, 235, 59, 0.7);
-    cursor: pointer;
-    position: relative;
-    transition: transform 0.1s;
-    animation: coinGlow 2s infinite alternate;
-}
-
-@keyframes coinGlow {
-    from { box-shadow: 
-        0 0 30px rgba(255, 152, 0, 0.8),
-        inset 0 0 30px rgba(255, 235, 59, 0.7); }
-    to { box-shadow: 
-        0 0 40px rgba(255, 152, 0, 1),
-        inset 0 0 40px rgba(255, 235, 59, 0.9); }
-}
-
-.coin-button:active {
-    transform: scale(0.85);
-    animation: none;
-    box-shadow: 
-        0 0 20px rgba(255, 152, 0, 0.6),
-        inset 0 0 20px rgba(255, 235, 59, 0.5);
-}
-
-.coin-button i {
-    font-size: 5rem;
-    color: #ff8f00;
-    text-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-}
-
-.coin-shine {
-    position: absolute;
-    top: 15%;
-    left: 15%;
-    width: 40px;
-    height: 40px;
-    background: rgba(255, 255, 255, 0.8);
-    border-radius: 50%;
-    filter: blur(5px);
-    animation: shineMove 3s infinite linear;
-}
-
-@keyframes shineMove {
-    0% { top: 15%; left: 15%; }
-    25% { top: 20%; left: 65%; }
-    50% { top: 65%; left: 65%; }
-    75% { top: 65%; left: 20%; }
-    100% { top: 15%; left: 15%; }
-}
-
-.click-instruction {
-    margin-top: 20px;
-    font-size: 1.2rem;
-    color: #ff6d00;
-    font-weight: 500;
-    text-align: center;
-    animation: pulseText 2s infinite;
-}
-
-@keyframes pulseText {
-    0% { opacity: 0.7; }
-    50% { opacity: 1; }
-    100% { opacity: 0.7; }
-}
-
-.upgrades {
-    display: flex;
-    justify-content: space-between;
-    flex-wrap: wrap;
-    gap: 30px;
-    margin-bottom: 40px;
-}
-
-.upgrade-section {
-    flex: 1;
-    min-width: 300px;
-    background: #fff8e1;
-    border-radius: 15px;
-    padding: 25px;
-    box-shadow: 0 8px 20px rgba(255, 152, 0, 0.15);
-    border: 2px solid #ffcc80;
-    transition: transform 0.3s;
-}
-
-.upgrade-section:hover {
-    transform: translateY(-5px);
-}
-
-.upgrade-section h2 {
-    color: #ff6d00;
-    margin-bottom: 10px;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
-.upgrade-section p {
-    color: #ff8a65;
-    margin-bottom: 20px;
-    font-size: 0.95rem;
-}
-
-.upgrade-btn {
-    width: 100%;
-    padding: 18px;
-    background: linear-gradient(90deg, #ff9800, #ff5722);
-    color: white;
-    border: none;
-    border-radius: 12px;
-    font-size: 1.1rem;
-    font-weight: 600;
-    cursor: pointer;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 8px;
-    transition: all 0.3s;
-    margin-bottom: 15px;
-}
-
-.upgrade-btn:hover {
-    background: linear-gradient(90deg, #ff8f00, #f4511e);
-    transform: translateY(-3px);
-    box-shadow: 0 8px 15px rgba(255, 87, 34, 0.3);
-}
-
-.upgrade-btn:disabled {
-    background: #ccc;
-    cursor: not-allowed;
-    transform: none;
-    box-shadow: none;
-}
-
-.upgrade-text {
-    font-size: 1.2rem;
-}
-
-.upgrade-cost {
-    font-size: 0.9rem;
-    opacity: 0.9;
-}
-
-.upgrade-info {
-    background: #ffecb3;
-    padding: 12px;
-    border-radius: 10px;
-    text-align: center;
-    color: #ff6d00;
-    font-weight: 500;
-}
-
-.achievements {
-    background: #fff3e0;
-    border-radius: 15px;
-    padding: 25px;
-    box-shadow: 0 8px 20px rgba(255, 152, 0, 0.15);
-    border: 2px solid #ffcc80;
-}
-
-.achievements h2 {
-    color: #ff6d00;
-    margin-bottom: 20px;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
-.achievement-list {
-    display: flex;
-    justify-content: space-between;
-    flex-wrap: wrap;
-    gap: 15px;
-}
-
-.achievement {
-    flex: 1;
-    min-width: 150px;
-    background: #ffe0b2;
-    border-radius: 10px;
-    padding: 15px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 10px;
-    color: #ff6d00;
-    opacity: 0.5;
-    transition: all 0.3s;
-}
-
-.achievement.unlocked {
-    opacity: 1;
-    background: #ffcc80;
-    box-shadow: 0 5px 10px rgba(255, 152, 0, 0.3);
-}
-
-.achievement i {
-    font-size: 2rem;
-}
-
-footer {
-    background: #ffcc80;
-    padding: 20px;
-    text-align: center;
-    border-top: 5px solid #ffab40;
-}
-
-.progress-save {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 15px;
-    flex-wrap: wrap;
-    gap: 15px;
-}
-
-.progress-save span {
-    color: #ff6d00;
-    font-weight: 500;
-}
-
-.reset-btn {
-    background: #ff6d00;
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 8px;
-    cursor: pointer;
-    font-weight: 500;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    transition: all 0.3s;
-}
-
-.reset-btn:hover {
-    background: #ff5722;
-    transform: translateY(-3px);
-}
-
-.hint {
-    color: #ff6d00;
-    font-style: italic;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 10px;
-}
-
-.coin-popup {
-    position: fixed;
-    color: #ff9800;
-    font-weight: bold;
-    font-size: 1.5rem;
-    pointer-events: none;
-    animation: floatUp 1s forwards;
-    z-index: 1000;
-}
-
-@keyframes floatUp {
-    0% { opacity: 1; transform: translateY(0); }
-    100% { opacity: 0; transform: translateY(-100px); }
-}
-
-@media (max-width: 768px) {
-    .stats {
-        flex-direction: column;
-        align-items: center;
-    }
-    
-    .stat-item {
-        width: 80%;
-    }
-    
-    .upgrade-section {
-        min-width: 100%;
-    }
-    
-    .coin-button {
-        width: 150px;
-        height: 150px;
-    }
-    
-    .coin-button i {
-        font-size: 4rem;
-    }
-    
-    .progress-save {
-        flex-direction: column;
-        align-items: center;
-    }
-}
-          </style>
-          <script>
-// Игровые переменные
-let coins = 0;
-let level = 1;
-let clickValue = 1;
-let clickUpgradeCost = 10;
-let autoClickers = 0;
-let autoClickerCost = 50;
-let achievements = {
-    "100": false,
-    "500": false,
-    "1000": false,
-    "level10": false
-};
-
-// DOM элементы
-const coinButton = document.getElementById('coin-button');
-const coinsDisplay = document.getElementById('coins');
-const levelDisplay = document.getElementById('level');
-const clickValueDisplay = document.getElementById('click-value');
-const upgradeButton = document.getElementById('upgrade-button');
-const upgradeCostDisplay = document.getElementById('upgrade-cost');
-const clickBonusDisplay = document.getElementById('click-bonus');
-const autoclickerButton = document.getElementById('autoclicker-button');
-const autoclickerCostDisplay = document.getElementById('autoclicker-cost');
-const autoClickersDisplay = document.getElementById('auto-clickers');
-const autoclickerIncomeDisplay = document.getElementById('autoclicker-income');
-const resetButton = document.getElementById('reset-button');
-
-// Инициализация игры
-function initGame() {
-    loadGame();
-    updateUI();
-    startAutoClickers();
-    
-    // Обновление интерфейса каждую секунду для плавности
-    setInterval(updateUI, 100);
-}
-
-// Загрузка сохраненной игры
-function loadGame() {
-    const savedGame = localStorage.getItem('orangeClickerSave');
-    
-    if (savedGame) {
-        const gameData = JSON.parse(savedGame);
-        coins = gameData.coins || 0;
-        level = gameData.level || 1;
-        clickValue = gameData.clickValue || 1;
-        clickUpgradeCost = gameData.clickUpgradeCost || 10;
-        autoClickers = gameData.autoClickers || 0;
-        autoClickerCost = gameData.autoClickerCost || 50;
-        achievements = gameData.achievements || achievements;
-    }
-}
-
-// Сохранение игры
-function saveGame() {
-    const gameData = {
-        coins,
-        level,
-        clickValue,
-        clickUpgradeCost,
-        autoClickers,
-        autoClickerCost,
-        achievements
-    };
-    
-    localStorage.setItem('orangeClickerSave', JSON.stringify(gameData));
-}
-
-// Обновление интерфейса
-function updateUI() {
-    // Обновление отображения
-    coinsDisplay.textContent = formatNumber(coins);
-    levelDisplay.textContent = level;
-    clickValueDisplay.textContent = clickValue;
-    upgradeCostDisplay.textContent = clickUpgradeCost;
-    clickBonusDisplay.textContent = clickValue;
-    autoclickerCostDisplay.textContent = autoClickerCost;
-    autoClickersDisplay.textContent = autoClickers;
-    autoclickerIncomeDisplay.textContent = autoClickers * 0.1;
-    
-    // Проверка, достаточно ли денег для улучшений
-    upgradeButton.disabled = coins < clickUpgradeCost;
-    autoclickerButton.disabled = coins < autoClickerCost;
-    
-    // Обновление уровня
-    updateLevel();
-    
-    // Проверка достижений
-    checkAchievements();
-    
-    // Сохранение игры
-    saveGame();
-}
-
-// Форматирование чисел (1000 -> 1K)
-function formatNumber(num) {
-    if (num >= 1000000) {
-        return (num / 1000000).toFixed(1) + 'M';
-    }
-    if (num >= 1000) {
-        return (num / 1000).toFixed(1) + 'K';
-    }
-    return num;
-}
-
-// Обновление уровня игрока
-function updateLevel() {
-    const newLevel = Math.floor(coins / 100) + 1;
-    
-    if (newLevel > level) {
-        level = newLevel;
-        // Анимация при повышении уровня
-        levelDisplay.style.transform = 'scale(1.5)';
-        setTimeout(() => {
-            levelDisplay.style.transform = 'scale(1)';
-        }, 300);
-    }
-}
-
-// Проверка достижений
-function checkAchievements() {
-    // 100 монет
-    if (coins >= 100 && !achievements["100"]) {
-        achievements["100"] = true;
-        unlockAchievement("achievement-100");
-    }
-    
-    // 500 монет
-    if (coins >= 500 && !achievements["500"]) {
-        achievements["500"] = true;
-        unlockAchievement("achievement-500");
-    }
-    
-    // 1000 монет
-    if (coins >= 1000 && !achievements["1000"]) {
-        achievements["1000"] = true;
-        unlockAchievement("achievement-1000");
-    }
-    
-    // 10 уровень
-    if (level >= 10 && !achievements["level10"]) {
-        achievements["level10"] = true;
-        unlockAchievement("achievement-level10");
-    }
-}
-
-// Разблокировка достижения
-function unlockAchievement(achievementId) {
-    const achievementElement = document.getElementById(achievementId);
-    achievementElement.classList.add('unlocked');
-    
-    // Анимация
-    achievementElement.style.transform = 'scale(1.2)';
-    setTimeout(() => {
-        achievementElement.style.transform = 'scale(1)';
-    }, 300);
-    
-    // Всплывающее уведомление
-    showPopup(`Достижение разблокировано!`, achievementElement);
-}
-
-// Показ всплывающего сообщения
-function showPopup(text, element) {
-    const popup = document.createElement('div');
-    popup.className = 'coin-popup';
-    popup.textContent = text;
-    
-    const rect = element.getBoundingClientRect();
-    popup.style.left = rect.left + rect.width / 2 + 'px';
-    popup.style.top = rect.top + 'px';
-    
-    document.body.appendChild(popup);
-    
-    setTimeout(() => {
-        popup.remove();
-    }, 1000);
-}
-
-// Клик по монете
-coinButton.addEventListener('click', function() {
-    // Добавление монет
-    coins += clickValue;
-    
-    // Создание всплывающего текста
-    createCoinPopup(clickValue);
-    
-    // Анимация кнопки
-    this.style.transform = 'scale(0.85)';
-    setTimeout(() => {
-        this.style.transform = 'scale(1)';
-    }, 100);
-    
-    updateUI();
-});
-
-// Создание всплывающего текста при клике
-function createCoinPopup(value) {
-    const popup = document.createElement('div');
-    popup.className = 'coin-popup';
-    popup.textContent = `+${value}`;
-    
-    const rect = coinButton.getBoundingClientRect();
-    const x = rect.left + Math.random() * rect.width;
-    const y = rect.top + Math.random() * rect.height;
-    
-    popup.style.left = x + 'px';
-    popup.style.top = y + 'px';
-    
-    document.body.appendChild(popup);
-    
-    setTimeout(() => {
-        popup.remove();
-    }, 1000);
-}
-
-// Улучшение клика
-upgradeButton.addEventListener('click', function() {
-    if (coins >= clickUpgradeCost) {
-        coins -= clickUpgradeCost;
-        clickValue += 1;
-        clickUpgradeCost = Math.floor(clickUpgradeCost * 1.5);
-        
-        // Анимация кнопки
-        this.style.transform = 'scale(0.95)';
-        setTimeout(() => {
-            this.style.transform = 'scale(1)';
-        }, 100);
-        
-        updateUI();
-    }
-});
-
-// Покупка автокликера
-autoclickerButton.addEventListener('click', function() {
-    if (coins >= autoClickerCost) {
-        coins -= autoClickerCost;
-        autoClickers += 1;
-        autoClickerCost = Math.floor(autoClickerCost * 1.7);
-        
-        // Анимация кнопки
-        this.style.transform = 'scale(0.95)';
-        setTimeout(() => {
-            this.style.transform = 'scale(1)';
-        }, 100);
-        
-        updateUI();
-    }
-});
-
-// Запуск автокликеров
-function startAutoClickers() {
-    setInterval(function() {
-        if (autoClickers > 0) {
-            coins += autoClickers;
-            updateUI();
-            
-            // Создание нескольких всплывающих текстов
-            for (let i = 0; i < Math.min(autoClickers, 5); i++) {
-                setTimeout(() => {
-                    createAutoClickerPopup();
-                }, i * 100);
-            }
-        }
-    }, 1000); // Каждую секунду
-}
-
-// Создание всплывающего текста для автокликера
-function createAutoClickerPopup() {
-    const popup = document.createElement('div');
-    popup.className = 'coin-popup';
-    popup.textContent = `+1`;
-    popup.style.color = '#ff5722';
-    
-    // Случайная позиция в верхней части экрана
-    const x = Math.random() * window.innerWidth;
-    const y = Math.random() * 100;
-    
-    popup.style.left = x + 'px';
-    popup.style.top = y + 'px';
-    
-    document.body.appendChild(popup);
-    
-    setTimeout(() => {
-        popup.remove();
-    }, 1000);
-}
-
-// Сброс игры
-resetButton.addEventListener('click', function() {
-    if (confirm('Вы уверены, что хотите сбросить весь прогресс?')) {
-        coins = 0;
-        level = 1;
-        clickValue = 1;
-        clickUpgradeCost = 10;
-        autoClickers = 0;
-        autoClickerCost = 50;
-        achievements = {
-            "100": false,
-            "500": false,
-            "1000": false,
-            "level10": false
-        };
-        
-        // Сброс визуального состояния достижений
-        document.querySelectorAll('.achievement').forEach(achievement => {
-            achievement.classList.remove('unlocked');
-        });
-        
-        localStorage.removeItem('orangeClickerSave');
-        updateUI();
-        
-        // Анимация кнопки сброса
-        this.style.transform = 'scale(0.95)';
-        setTimeout(() => {
-            this.style.transform = 'scale(1)';
-        }, 100);
-    }
-});
-
-// Запуск игры при загрузке страницы
-window.addEventListener('DOMContentLoaded', initGame);
-    </script>
